@@ -15,4 +15,8 @@ templates: 主组件
 utils: 通用方法封装和loading样式
 index.jsx : 主入口
 
-使用的技术：React+mock+ant
+项目是使用webpack手动搭建的react项目
+base.js webpack通用配置
+dev.js development配置
+
+使用的技术：React+mock+ant+webpack
