@@ -23,20 +23,9 @@ const dish = Mock.mock(/\/test.com\/dish/, "post", (options) => {
     return Mock.mock({
       code: "0",
       data: {
-        list: [
-          {
-            name: "主料",
-            innerValue: "@cparagraph(1)",
-          },
-          {
-            name: "香辛料",
-            innerValue: "@cparagraph(1)",
-          },
-          {
-            name: "油",
-            "innerValue|1": ["花生油", "调和油", "豆油"],
-          },
-        ],
+        main: "@cparagraph(1)",
+        spice: "@cparagraph(1)",
+        oil: "花生油",
         id: match.params.id,
         dishName: "@cname",
         introduce: "@cparagraph(1)",
@@ -51,20 +40,9 @@ const dish = Mock.mock(/\/test.com\/dish/, "post", (options) => {
     return Mock.mock({
       code: "0",
       data: {
-        list: [
-          {
-            name: "主料",
-            innerValue: "@cparagraph(1)",
-          },
-          {
-            name: "配料",
-            innerValue: "@cparagraph(1)",
-          },
-          {
-            name: "甜度",
-            "innerValue|1": ["微甜", "正常", "超甜"],
-          },
-        ],
+        main: "@cparagraph(1)",
+        seconds: "@cparagraph(1)",
+        sweet: "微甜",
         id: match.params.id,
         dishName: "@cname",
         introduce: "@cparagraph(1)",
@@ -79,16 +57,8 @@ const dish = Mock.mock(/\/test.com\/dish/, "post", (options) => {
     return Mock.mock({
       code: "0",
       data: {
-        list: [
-          {
-            name: "介绍",
-            innerValue: "@cparagraph(1)",
-          },
-          {
-            name: "剩余数量",
-            innerValue: "@natural(1,30)",
-          },
-        ],
+        introduce: "@cparagraph(1)",
+        remain: "@natural(1,30)",
         id: match.params.count,
         dishName: "@cname",
         price: "@natural(1,100)",
@@ -97,35 +67,46 @@ const dish = Mock.mock(/\/test.com\/dish/, "post", (options) => {
       msg: "操作成功",
     });
   }
-  if (match.params.type === "join") {
+  if (match.params.type === "store") {
     return Mock.mock({
       code: "0",
       data: {
-        list: [
-          {
-            name: "店名",
-            innerValue:"@cname",
-          },
-          {
-            name: "介绍",
-            innerValue:"@cparagraph(1)",
-          },
-          {
-            name: "电话",
-            innerValue:"@id",
-          },
-          {
-            name: "居住地",
-            innerValue: "@cparagraph(1)",
-          },
-        ],
+        storeId: "@id",
+        storeName: "@cname",
+        introduce: "@cparagraph(1)",
+        Phone: "@id",
+        residence: "@cparagraph(1)",
       },
       msg: "操作成功",
     });
   }
 });
 
+const joins = Mock.mock(/\/test.com\/store/,"get", {
+  code: "0",
+  data: {
+    list: [
+      {
+        storeId: "@id",
+        storeName: "@cname",
+        introduce: "@cparagraph(1)",
+        tel: "@id",
+        live: "@cparagraph(1)",
+      },
+      {
+        storeId: "@id",
+        storeName: "@cname",
+        introduce: "@cparagraph(1)",
+        tel: "@id",
+        live: "@cparagraph(1)",
+      },
+    ],
+  },
+  msg: "操作成功",
+});
+
 export default {
   gourmet,
   dish,
+  joins,
 };

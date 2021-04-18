@@ -2,20 +2,20 @@ import loadable from "../../utils/loadable";
 
 const Scale = [
   {
-    path: "/scale/:count&:type",
+    path: "/restaurant/scale/:count&:type",
     name: "scale",
     component: loadable({
       loader: () =>
-        import(/* webpackChunkName: 'gourmet' */ "../../templates/scale"),
+        import(/* webpackChunkName: 'gourmet' */ "../../templates/restaurant/scale"),
     }),
     childRoutes: [
       {
-        path: "/drinkAdesert/dish",
+        path: "/restaurant/drinkAdesert/dish",
         name: "dish",
         component: loadable({
           loader: () =>
             import(
-              /* webpackChunkName: 'dish' */ "../../templates/dish"
+              /* webpackChunkName: 'dish' */ "../../templates/restaurant/dish"
             ),
         }),
       },

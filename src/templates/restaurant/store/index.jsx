@@ -1,7 +1,8 @@
 import React, { Component } from "react";
-import DetailTop from "../../components/detailTop";
-import axios from "../../interceptor";
-
+import DetailTop from "../../../components/detailTop";
+import axios from "../../../interceptor";
+import {dish} from '../../../utils/config'
+import local from "../../../utils/localStorage";
 class Join extends Component {
   constructor() {
     super();
@@ -10,24 +11,29 @@ class Join extends Component {
     };
   }
 
-  componentDidMount() {
-    const match ={params:{type: "join"}}
-    console.log(match);
+  getData=()=>{
+    const match ={params:{type: "store"}}
     axios({
       method: "POST",
-      url: `test.com/dish`,
+      url: dish,
       data: {
         match,
+        storeId: local.wls.getItem("storeId"),
       },
     }).then((res) => {
       const { code, data } = res.data;
+      const {list} =data;
       console.log(data)
+      const newData = list[0]
       if (code === "0") {
         this.setState({
-          data,
+          data:newData,
         });
       }
     });
+  }
+  componentDidMount() {
+   this.getData()
   }
 
   render() {

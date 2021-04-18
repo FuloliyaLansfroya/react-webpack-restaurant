@@ -13,7 +13,11 @@ import {
 } from "antd";
 import PropTypes from "prop-types";
 import { createHashHistory } from "history";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import axios from "../../interceptor";
+import local from "../../utils/localStorage";
+import {shopping} from "../../utils/config";
+import "../../mock/page"
 
 const { TabPane } = Tabs;
 const { Meta } = Card;
@@ -27,6 +31,8 @@ const Content = ({ children, extraContent }) => {
     </Row>
   );
 };
+
+
 class DetailTop extends Component {
   constructor(props) {
     super(props);
@@ -35,34 +41,35 @@ class DetailTop extends Component {
     };
   }
 
+  // 返回
   onBack = () => {
     history.go(-1);
   };
 
+  // 展示模块
   showModal = () => {
     this.setState({
       visible: true,
     });
   };
 
+  // 确认
   handleOk = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   };
 
+  // 取消
   handleCancel = (e) => {
-    console.log(e);
     this.setState({
       visible: false,
     });
   };
 
+  // 主内容
   content = () => {
     const { type, count, data } = this.props;
-    const { list } = data;
-    console.log(type);
     return (
       <>
         <Row gutter={16}>
@@ -75,8 +82,8 @@ class DetailTop extends Component {
                 <Meta title={data.dishName} description={data.introduce} />
               </Card>
             ) : (
-              <></>
-            )}
+                <></>
+              )}
             {type === "drinkAdesert" ? (
               <Card
                 bordered={false}
@@ -85,8 +92,8 @@ class DetailTop extends Component {
                 <Meta title={data.dishName} description={data.introduce} />
               </Card>
             ) : (
-              <></>
-            )}
+                <></>
+              )}
             {type === "scale" ? (
               <Card
                 bordered={false}
@@ -95,31 +102,35 @@ class DetailTop extends Component {
                 }
               />
             ) : (
-              <></>
-            )}
+                <></>
+              )}
             {type === "join" ? (
               <Card
                 bordered={false}
                 cover={<img src={require("../../assert/10.jpg")} alt="" />}
               />
             ) : (
-              <></>
-            )}
+                <></>
+              )}
           </Col>
           <Col span={12}>
-            {type === "gourmet" || type === "drinkAdesert" ? (
+            {type === "gourmet" ? (
               <Tabs defaultActiveKey="1">
                 <TabPane tab="配料详情" key="1">
-                  <List
-                    bordered
-                    dataSource={list}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <Typography.Text mark>{item.name}: </Typography.Text>
-                        {item.innerValue}
-                      </List.Item>
-                    )}
-                  />
+                  <List bordered>
+                    <List.Item>
+                      <Typography.Text mark>主料:</Typography.Text>
+                      {data.main}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>配料:</Typography.Text>
+                      {data.spice}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>油:</Typography.Text>
+                      {data.oil}
+                    </List.Item>
+                  </List>
                 </TabPane>
                 <TabPane tab="价格详情" key="2">
                   <List bordered>
@@ -135,55 +146,138 @@ class DetailTop extends Component {
                 </TabPane>
               </Tabs>
             ) : (
-              <></>
-            )}
+                <></>
+              )}
+            {type === "drinkAdesert" ? (
+              <Tabs defaultActiveKey="1">
+                <TabPane tab="配料详情" key="1">
+                  <List bordered>
+                    <List.Item>
+                      <Typography.Text mark>主料:</Typography.Text>
+                      {data.main}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>配料:</Typography.Text>
+                      {data.seconds}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>甜度:</Typography.Text>
+                      {data.sweet}
+                    </List.Item>
+                  </List>
+                </TabPane>
+                <TabPane tab="价格详情" key="2">
+                  <List bordered>
+                    <List.Item>
+                      <Typography.Text mark>原价:</Typography.Text>
+                      {data.price}元
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>现价:</Typography.Text>
+                      {data.sellPrice}元
+                    </List.Item>
+                  </List>
+                </TabPane>
+              </Tabs>
+            ) : (
+                <></>
+              )}
             {type === "scale" ? (
               <Tabs defaultActiveKey="1">
                 <TabPane tab="餐桌详情" key="1">
-                  <List
-                    bordered
-                    dataSource={data.list}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <Typography.Text mark>{item.name}:</Typography.Text>{" "}
-                        {item.innerValue}
-                      </List.Item>
-                    )}
-                  />
+                  <List bordered>
+                    <List.Item>
+                      <Typography.Text mark>名字:</Typography.Text>
+                      {data.scaleName}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>介绍:</Typography.Text>
+                      {data.introduce}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>剩余数量:</Typography.Text>
+                      {data.surplus}桌
+                    </List.Item>
+                  </List>
+                </TabPane>
+                <TabPane tab="价格详情" key="2">
+                  <List bordered>
+                    <List.Item>
+                      <Typography.Text mark>原价:</Typography.Text>
+                      {data.price}元
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>现价:</Typography.Text>
+                      {data.sellPrice}元
+                    </List.Item>
+                  </List>
                 </TabPane>
               </Tabs>
             ) : (
-              <></>
-            )}
+                <></>
+              )}
             {type === "join" ? (
               <Tabs defaultActiveKey="1">
                 <TabPane tab="详细信息" key="1">
-                  <List
-                    bordered
-                    dataSource={data.list}
-                    renderItem={(item) => (
-                      <List.Item>
-                        <Typography.Text mark>{item.name}</Typography.Text>{" "}
-                        {item.innerValue}
-                      </List.Item>
-                    )}
-                  />
+                  <List bordered>
+                    <List.Item>
+                      <Typography.Text mark>店名 :</Typography.Text>
+                      {data.storeName}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>介绍 :</Typography.Text>
+                      {data.introduce}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>电话 :</Typography.Text>
+                      {data.phone}
+                    </List.Item>
+                    <List.Item>
+                      <Typography.Text mark>居住地 :</Typography.Text>
+                      {data.residence}
+                    </List.Item>
+                  </List>
                 </TabPane>
               </Tabs>
             ) : (
-              <></>
-            )}
+                <></>
+              )}
           </Col>
         </Row>
       </>
     );
   };
 
+  // 购物车页面
+  onShop = () => {
+    let { data,type } = this.props;
+    console.log(data,type)
+    axios({
+      method: "POST",
+      url: shopping,
+      data: {
+        data,
+        type,
+        storeId: local.wls.getItem("storeId"),
+      },
+    }).then((res) => {
+      // const { code, data } = res.data;
+      console.log(res)
+      // const {list} =data;
+      // if (code === "0") {
+      //   this.setState({
+      //     list:list[0],
+      //   });
+      // }
+    });
+  }
+
+  // 按钮属性
   getBtn = (type) => {
     if (type === "gourmet" || type === "drinkAdesert") {
       return [
-        <Button key="2">
-          <NavLink to="/shopping">加入购物车</NavLink>
+        <Button key="2" onClick={this.onShop}>
+          加入购物车
         </Button>,
         <Button key="1" type="primary" onClick={this.showModal}>
           购买
@@ -197,8 +291,16 @@ class DetailTop extends Component {
         </Button>,
       ];
     }
+    if (type === "join") {
+      return [
+        <Button key="1" type="primary" onClick={this.showModal}>
+          <Link to="/restaurant/join/joinForm"> 加盟</Link>
+        </Button>,
+      ];
+    }
   };
 
+  // 弹窗属性
   modalSlot = (type) => {
     const { data } = this.props;
     if (type === "gourmet" || type === "drinkAdesert") {
@@ -245,7 +347,8 @@ class DetailTop extends Component {
   };
 
   render() {
-    const { type, data } = this.props;
+    let { type, data } = this.props;
+    const { visible } = this.state;
     return (
       <>
         <PageHeader
@@ -260,14 +363,18 @@ class DetailTop extends Component {
         >
           <Content>{this.content()}</Content>
         </PageHeader>
-        <Modal
-          title="购买"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
-        >
-          {this.modalSlot(type)}
-        </Modal>
+        {
+          type === 'join' ? "" : (
+            <Modal
+              title="购买"
+              visible={visible}
+              onOk={this.handleOk}
+              onCancel={this.handleCancel}
+            >
+              {this.modalSlot(type)}
+            </Modal>
+          )
+        }
       </>
     );
   }

@@ -2,8 +2,10 @@ import React, { Component } from "react";
 import { Collapse, Avatar } from "antd";
 import PropTypes from "prop-types";
 import { UserOutlined } from "@ant-design/icons";
-import axios from "../../interceptor";
-import "../../mock/staff";
+import axios from "../../../interceptor";
+import "../../../mock/staff";
+import { staff } from "../../../utils/config";
+import local from "../../../utils/localStorage";
 const { Panel } = Collapse;
 
 class Staff extends Component {
@@ -33,13 +35,13 @@ class Staff extends Component {
     const { match } = this.props;
     axios({
       method: "POST",
-      url: `test.com/staff`,
+      url: staff,
       data: {
         match,
+        storeId: local.wls.getItem("storeId"),
       },
     }).then((res) => {
       const { code, data } = res.data;
-      console.log(data);
       const { list } = data;
       if (code === "0") {
         this.setState({
@@ -55,11 +57,11 @@ class Staff extends Component {
       return (
         <Collapse accordion>
           {list.map((item) => (
-            <Panel header={item.name} key={item.id}>
+            <Panel header={item.perName} key={item.staffId}>
               <Avatar size={64} icon={<UserOutlined />} />
               <p>{item.introduce}</p>
-              <p>居住地:{item.live}</p>
-              <p>电话:{item.tel}</p>
+              <p>居住地:{item.residence}</p>
+              <p>电话:{item.phone}</p>
             </Panel>
           ))}
         </Collapse>
@@ -69,9 +71,11 @@ class Staff extends Component {
       return (
         <Collapse accordion>
           {list.map((item) => (
-            <Panel header={item.name} key={item.id}>
+            <Panel header={item.perName} key={item.staffId}>
               <Avatar size={64} icon={<UserOutlined />} />
               <p>{item.introduce}</p>
+              <p>居住地:{item.residence}</p>
+              <p>电话:{item.phone}</p>
             </Panel>
           ))}
         </Collapse>
@@ -81,9 +85,11 @@ class Staff extends Component {
       return (
         <Collapse accordion>
           {list.map((item) => (
-            <Panel header={item.name} key={item.id}>
+            <Panel header={item.perName} key={item.staffId}>
               <Avatar size={64} icon={<UserOutlined />} />
               <p>{item.introduce}</p>
+              <p>居住地:{item.residence}</p>
+              <p>电话:{item.phone}</p>
             </Panel>
           ))}
         </Collapse>
@@ -93,7 +99,6 @@ class Staff extends Component {
 
   render() {
     const { match } = this.props;
-    console.log(match);
     return <>{this.getIdentity(match.params.identity)}</>;
   }
 }

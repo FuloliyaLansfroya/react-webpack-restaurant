@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import Cards from "../../components/Cards";
-import axios from "../../interceptor";
-import "../../mock/shopping";
+import Cards from "../../../components/Cards";
+import axios from "../../../interceptor";
+import "../../../mock/shopping";
 import { Row, Col, Button, Divider, Space, Modal, Tabs } from "antd";
-
+import { shopping } from "../../../utils/config";
+import local from "../../../utils/localStorage";
 const { TabPane } = Tabs;
 
 class Shopping extends Component {
@@ -18,11 +19,14 @@ class Shopping extends Component {
   componentDidMount() {
     axios({
       method: "GET",
-      url: "test.com/shopping",
+      url: shopping,
+      params: {
+        storeId: local.wls.getItem("storeId"),
+      },
     }).then((res) => {
-      console.log(res);
       const { code, data } = res.data;
       const { list } = data;
+      console.log(list)
       if (code === "0") {
         this.setState({
           list,
@@ -95,8 +99,8 @@ class Shopping extends Component {
     return (
       <>
         <Row style={{ maxHeight: 700 }}>
-          <Col span={16}>
-            <Cards list={list} slot={slot} span={7} type="drinkAdesert" />
+          <Col span={24}>
+            <Cards list={list} slot={slot} span={7} type="shopping" />
             <Space>
               总价:
               <span style={{ fontSize: 26, color: "red" }}>
@@ -106,11 +110,6 @@ class Shopping extends Component {
                 支付
               </Button>
             </Space>
-          </Col>
-
-          <Col span={8} style={{ overflowY: "scroll", overflowX: "hidden" }}>
-            <h2>推荐菜品</h2>
-            <Cards list={list} span={20} type="drinkAdesert" />
           </Col>
         </Row>
         <Modal

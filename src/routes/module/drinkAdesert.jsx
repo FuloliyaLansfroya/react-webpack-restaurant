@@ -2,20 +2,20 @@ import loadable from "../../utils/loadable";
 
 const DrinkAdesert = [
   {
-    path: "/drinkAdesert",
+    path: "/restaurant/drinkAdesert",
     name: "drinkAdesert",
     component: loadable({
       loader: () =>
-        import(/* webpackChunkName: 'gourmet' */ "../../templates/drinkAdesert"),
+        import(/* webpackChunkName: 'gourmet' */ "../../templates/restaurant/drinkAdesert"),
     }),
     childRoutes: [
       {
-        path: "/drinkAdesert/dish/:type&:id",
+        path: "/restaurant/drinkAdesert/dish/:type&:id",
         name: "dish",
         component: loadable({
           loader: () =>
             import(
-              /* webpackChunkName: 'dish' */ "../../templates/dish"
+              /* webpackChunkName: 'dish' */ "../../templates/restaurant/dish"
             ),
         }),
       },

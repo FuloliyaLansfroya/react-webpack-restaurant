@@ -1,0 +1,19 @@
+const url2 = "http://localhost:4005";
+const url ="test.com"
+const content = `${url2}/content`;
+const login = `${url2}/login`;
+const addComments = `${url2}/addComments`;
+const comments = `${url2}/comments`;
+const register = `${url2}/register`;
+const store = `${url2}/store`;
+const join = `${url2}/join`;
+const page = `${url2}/page`;
+const user = `${url2}/user`;
+const drinkAdesert = `${url2}/drinkAdesert`;
+const gourmet = `${url2}/gourmet`;
+const dish = `${url2}/dish`;
+const shopping = `${url2}/shopping`;
+const staff = `${url2}/staff`;
+const message = `${url2}/message`;
+const changeUser = `${url2}/changeUser`;
+export { content, login,store, addComments, comments, register, join, page,changeUser, user,drinkAdesert,gourmet,dish,shopping,staff,message };

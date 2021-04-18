@@ -2,12 +2,24 @@ import loadable from "../../utils/loadable";
 
 const Join = [
   {
-    path: "/join",
+    path: "/restaurant/join",
     name: "join",
     component: loadable({
       loader: () =>
-        import(/* webpackChunkName: 'gourmet' */ "../../templates/join"),
+        import(/* webpackChunkName: 'join' */ "../../templates/restaurant/store"),
     }),
+    childRoutes: [
+      {
+        path: "/restaurant/join/joinForm",
+        name: "joinForm",
+        component: loadable({
+          loader: () =>
+            import(
+              /* webpackChunkName: 'joinForm' */ "../../components/joinForm"
+            ),
+        }),
+      },
+    ],
   },
 ];
 

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const socketUrl = "ws://localhost:3001";
+      let ws = new WebSocket(socketUrl);
+
+      ws.onopen = function (e) {
+        console.log("服务器连接成功");
+      };
+      ws.onclose = function (e) {
+        console.log("服务器连接关闭");
+      };
+      ws.onerror = function () {
+        console.log("服务器连接出错");
+      };
+      ws.onmessage = function (e) {
+        //接收服务器返回的数据
+        console.log(e.data);
+        // if (resData.funName === "userCount") {
+        //   this.setState({
+        //     count: resData.users,
+        //     list: resData.chat,
+        //   });
+        //   console.log(resData.chat);
+        // } else {
+        //   this.setState({
+        //     count: resData.users,
+        //     list: [
+        //       ...this.list,
+        //       { userId: resData.userId, content: resData.msg },
+        //     ],
+        //   });
+        // }
+      };
+    </script>
+  </body>
+</html>
